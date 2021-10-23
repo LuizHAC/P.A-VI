@@ -1,0 +1,22 @@
+/*
+COLORS:
+Red: #AB0103
+Yellow: #ece912
+Blue: #0E08f6
+Green: #56E868
+Purple: #9750D3
+White: #FFFFFF
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    padding: 0px;
+    background-image: url("../../Assets/UI/bg.jpg");
+    background-size: cover;
+    background-position: top;
+  }
