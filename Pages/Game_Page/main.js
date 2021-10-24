@@ -73,6 +73,36 @@ class Bullet extends Entity{
     }
 }
 
+class Alien extends Entity{
+    constructor({x, y, type}){
+        super({tag: 'img'});
+        this.setImage(type);
+        this.speed = 3;
+        
+
+        this.setPosition(x, y);
+    }
+
+    setImage(type){
+        if(type == 1){
+            this.el.src = '../../Assets/Game/enemy1.png';
+        }
+        else if(type == 2){
+            this.el.src = '../../Assets/Game/enemy2.png';
+        }
+        else if(type == 3){
+            this.el.src = '../../Assets/Game/enemy3.png';
+        }
+        else if(type == 4){
+            this.el.src = '../../Assets/Game/enemy4.png';
+        }
+    }
+
+    update(){
+        this.setPosition(this.x, this.y - this.speed);
+    }
+}
+
 const KEY_RIGHT = 39;
 const KEY_LEFT = 37;
 const KEY_SPACE = 32
@@ -111,6 +141,17 @@ window.addEventListener("keyup", KeyRelease);
 
 const ship = new Ship();
 const bullets = [];
+const aliens = [];
+
+const Aliens_Rows = 4;
+const Aliens_Cols = 9;
+
+for (let row = 0 ; row <= Aliens_Rows; row++){
+    for (let col = 0; col <= Aliens_Cols; col++){
+        const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row});
+        aliens.push(alien);
+    }
+}
 
 const createBullet = ({x, y}) => {
     bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20}));
