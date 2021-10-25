@@ -177,6 +177,7 @@ for (let row = 0 ; row <= Aliens_Rows; row++){
     }
 }
 
+// Creating a bullet
 const createBullet = ({x, y}) => {
     bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20}));
 }
@@ -201,6 +202,7 @@ const update = () => {
         ship.shot({createBullet})
     }
 
+    // For each bullet, if y <0, remove this element
     bullets.forEach((bullet) => {
         bullet.update();
     
@@ -210,6 +212,7 @@ const update = () => {
         }
       });
 
+      // For each alien, if alien collide to the wall, change its direction
       aliens.forEach((alien) => {
             alien.update();
         
