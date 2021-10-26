@@ -2,9 +2,9 @@
 class Entity {
     constructor({ tag = 'div', className = '' } = {}) {
       this.el = document.createElement(tag);
-      document.body.appendChild(this.el);
       this.el.className = 'entity ' + className;
       this.el.style.position = 'absolute';
+      document.body.appendChild(this.el);
     }
     
     // Set the position from a given x, y
@@ -84,9 +84,8 @@ class Alien extends Entity{
     constructor({x, y, type}){
         super({tag: 'img'});
         this.setImage(type);
-        this.speed = 1;
         this.direction = 'left';
-
+        this.speed = 1.0;
         this.setPosition(x, y);
     }
 
@@ -97,12 +96,15 @@ class Alien extends Entity{
         }
         else if(type == 2){
             this.el.src = '../../Assets/Game/enemy2.png';
+            this.el.style.filter = 'invert(100%) sepia(31%) saturate(4000%) hue-rotate(54deg) brightness(100%) contrast(82%)';
         }
         else if(type == 3){
             this.el.src = '../../Assets/Game/enemy3.png';
+            this.el.style.filter = 'invert(82%) sepia(47%) saturate(566%) hue-rotate(9deg) brightness(97%) contrast(84%)';
         }
         else if(type == 4){
             this.el.src = '../../Assets/Game/enemy4.png';
+            this.el.style.filter = 'invert(44%) sepia(58%) saturate(3969%) hue-rotate(246deg) brightness(86%) contrast(91%)';
         }
     }
 
@@ -113,6 +115,10 @@ class Alien extends Entity{
 
     moveLeft(){
         this.direction = 'left';
+    }
+
+    moveDown(){
+        this.setPosition(this.x, this.y + this.speed * 5);
     }
 
     update(){
@@ -188,6 +194,26 @@ const removeBullet = (bullet) => {
     bullet.remove();
 };
 
+// Catch the aliens closest to crashing into the wall
+const getClosestAlien = (direction) => {
+
+    if(direction === 'left'){
+        return aliens.reduce((minimumAlien, currentAlien) => {
+            return currentAlien.x < minimumAlien.x
+              ? currentAlien
+              : minimumAlien;
+          });
+    }
+    if(direction === 'right'){
+        return aliens.reduce((maximumAlien, currentAlien) => {
+            return currentAlien.x > maximumAlien.x
+            ? currentAlien
+            : maximumAlien;
+        });
+    
+  };
+};
+
 // Updating the ship and bullet position
 const update = () => {
     if (keys.right && ship.x < window.innerWidth - 100){
@@ -215,14 +241,24 @@ const update = () => {
       // For each alien, if alien collide to the wall, change its direction
       aliens.forEach((alien) => {
             alien.update();
-        
-            if(alien.x < 30){
-                alien.moveRight();
-            }
-            else if(alien.x > window.innerWidth - 120){
-                alien.moveLeft();
-            }
       })
+
+      const closestAlienLeft = getClosestAlien('left');
+      const closestAlienRight = getClosestAlien('right');
+
+        if(closestAlienLeft.x < 30){ 
+            aliens.forEach((alien) => {
+                alien.moveRight();
+                alien.moveDown();
+            }) 
+        }
+
+        if(closestAlienRight.x > window.innerWidth - 120){
+            aliens.forEach((alien) => {
+                alien.moveLeft();
+                alien.moveDown();
+            }) 
+        }
 
 };
 
