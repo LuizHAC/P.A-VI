@@ -30,7 +30,7 @@ class Ship  extends Entity{
         super({className: 'ship', tag: 'img'});
         this.el.src = '../../Assets/Game/ship.png';
 
-        this.speed = 5;
+        this.speed = 2;
         this.canShot = true;
         this.el.className = 'ship';
         this.setPosition(window.innerWidth / 2, window.innerHeight - 120)
@@ -64,10 +64,10 @@ class Bullet extends Entity{
     constructor({x, y}){
         super({className: 'bullet'});
 
-        this.speed = 5;
+        this.speed = 2;
         this.el.className = 'bullet';
         this.el.style.backgroundColor = 'white';
-        this.el.style.width = `${5}px`;
+        this.el.style.width = `${10}px`;
         this.el.style.height = `${15}px`;
 
         this.setPosition(x, y);
@@ -81,12 +81,15 @@ class Bullet extends Entity{
 
 // Creating the Alien class
 class Alien extends Entity{
-    constructor({x, y, type}){
+    constructor({x, y, type, getOverlapBullet, removeAlien, removeBullet}){
         super({tag: 'img'});
         this.setImage(type);
         this.direction = 'left';
         this.speed = 1.0;
         this.setPosition(x, y);
+        this.getOverlapBullet = getOverlapBullet;
+        this.removeAlien = removeAlien;
+        this.removeBullet = removeBullet;
     }
 
     // Setting the alien image using it's row
@@ -127,6 +130,12 @@ class Alien extends Entity{
         }
         else{
             this.setPosition(this.x + this.speed, this.y);
+        }
+
+        const overlap = this.getOverlapBullet(this);
+        if (overlap){
+            this.removeAlien(this);
+            this.removeBullet(overlap);
         }
     }
 }
@@ -172,20 +181,9 @@ const ship = new Ship();
 const bullets = [];
 const aliens = [];
 
-const Aliens_Rows = 4;
-const Aliens_Cols = 9;
-
-// Creating the enemies
-for (let row = 0 ; row <= Aliens_Rows; row++){
-    for (let col = 0; col <= Aliens_Cols; col++){
-        const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row});
-        aliens.push(alien);
-    }
-}
-
-// Creating a bullet
-const createBullet = ({x, y}) => {
-    bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20}));
+const removeAlien = (alien) => {
+    aliens.splice(aliens.indexOf(alien), 1);
+    alien.remove();
 }
 
 // Removing the bullet element (so we don't have infinite bullet elements)
@@ -193,6 +191,44 @@ const removeBullet = (bullet) => {
     bullets.splice(bullets.indexOf(bullet), 1);
     bullet.remove();
 };
+
+const isOverlap = (entity1, entity2) => {
+    const rect1 = entity1.el.getBoundingClientRect();
+    const rect2 = entity2.el.getBoundingClientRect();
+
+    return !(
+    rect1.right < rect2.left ||
+    rect1.left > rect2.right ||
+    rect1.bottom < rect2.top ||
+    rect1.top > rect2.bottom
+    );
+}
+
+const getOverlapBullet = (entity) => {
+    for (let bullet of bullets){
+        if (isOverlap(entity, bullet)){
+            return bullet;
+        }
+    }
+    return null;
+}
+
+const Aliens_Rows = 4;
+const Aliens_Cols = 9;
+
+// Creating the enemies
+for (let row = 0 ; row <= Aliens_Rows; row++){
+    for (let col = 0; col <= Aliens_Cols; col++){
+        const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row, getOverlapBullet, removeAlien, removeBullet});
+        aliens.push(alien);
+    }
+}
+// Creating a bullet
+const createBullet = ({x, y}) => {
+    bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20}));
+}
+
+
 
 // Catch the aliens closest to crashing into the wall
 const getClosestAlien = (direction) => {

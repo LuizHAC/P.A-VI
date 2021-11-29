@@ -26,9 +26,11 @@ White: #FFFFFF
   }
   
   .logo-box {
-    position: absolute;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     top: 40px;
-    left: 35%;
+    text-align: center;
   }
   
   .logo {
@@ -36,23 +38,27 @@ White: #FFFFFF
   }
   
   .button-box {
+    display: inline-block;
     position: absolute;
-    top: 50%;
-    left: 47.5%;
-    transform: translate(-50%, -50%);
+    margin-left: auto;
+    margin-right: auto;
+    right: 44%;
+    top: 550px;
     text-align: center;
   }
   
   .button-play {
-    padding-bottom: 10px;
+    padding: 15px 50px;
+    padding-bottom: 20px;
     font-size: 20px;
+    width: 250px;
   }
   
   .btn:link,
   .btn:visited {
       text-transform: uppercase;
       text-decoration: none;
-      padding: 15px 40px;
+      padding: 15px 50px;
       display: inline-block;
       border-radius: 100px;
       transition: all .2s;
@@ -60,22 +66,21 @@ White: #FFFFFF
       
   }
   
-  .btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,.2);
-  }
-  
-  .btn:active {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 10px rgba(0,0,0,.2);
-  }
-  
   .btn-yellow {
       background-color: #ece912;
       color: rgb(0, 0, 0);
       font-size: 20px;
+      box-shadow: 0 9px #AB0103;
   }
+
+  .btn-yellow:hover {background-color: #ccc91f}
   
+  .btn-yellow:active {
+    background-color: #ece912;
+    box-shadow: 0 5px #AB0103;
+    transform: translateY(4px);
+  }
+
   .btn::after {
       content: "";
       display: inline-block;
@@ -87,18 +92,4 @@ White: #FFFFFF
       left: 0;
       z-index: -1;
       transition: all .4s;
-  }
-  
-  .btn-yellow::after {
-      background-color: #ece912;
-  }
-  
-  .btn:hover::after {
-      transform: scaleX(1.4) scaleY(1.6);
-      opacity: 0;
-  }
-  
-  .btn-animated {
-      animation: moveTop .5s ease-out;
-      animation-fill-mode: backwards;
   }
