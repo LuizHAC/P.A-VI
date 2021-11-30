@@ -72,11 +72,11 @@ class Ship  extends Entity{
     }
 
     // Creating a function to shot and to apply a cooldown between the consecutive shots
-    shot({createBullet}){
+    shot({createBullet, player}){
         
         if(this.canShot){
             this.canShot = false;
-            createBullet({x: this.x + 43.5, y: this.y - 20});
+            createBullet({x: this.x + 43.5, y: this.y - 20, player});
             setTimeout( () => {
                 this.canShot = true;
             }, 500);
@@ -87,12 +87,13 @@ class Ship  extends Entity{
 
 // Creating the Bullet class
 class Bullet extends Entity{
-    constructor({x, y}){
+    constructor({x, y, player}){
         super({className: 'bullet'});
 
         this.speed = 2;
+        this.player = player
         this.el.className = 'bullet';
-        this.el.style.backgroundColor = 'white';
+        this.setColor()
         this.el.style.width = `${10}px`;
         this.el.style.height = `${15}px`;
 
@@ -101,6 +102,15 @@ class Bullet extends Entity{
 
     update(){
         this.setPosition(this.x, this.y - this.speed);
+    }
+
+    setColor(){
+        if(player == 1){
+            this.el.style.backgroundColor = 'red';
+        }
+        if(player == 2){
+            this.el.style.backgroundColor = 'blue';
+        }
     }
 
 }
@@ -123,22 +133,22 @@ class Alien extends Entity{
     setImage(type){
         if(type == 1){
             this.el.src = '../../Assets/Game/enemy1.png';
-            this.score = 50;
+            this.score = 15;
         }
         else if(type == 2){
             this.el.src = '../../Assets/Game/enemy2.png';
             this.el.style.filter = 'invert(100%) sepia(31%) saturate(4000%) hue-rotate(54deg) brightness(100%) contrast(82%)';
-            this.score = 30;
+            this.score = 10;
         }
         else if(type == 3){
             this.el.src = '../../Assets/Game/enemy3.png';
             this.el.style.filter = 'invert(82%) sepia(47%) saturate(566%) hue-rotate(9deg) brightness(97%) contrast(84%)';
-            this.score = 15;
+            this.score = 5;
         }
         else if(type == 4){
             this.el.src = '../../Assets/Game/enemy4.png';
             this.el.style.filter = 'invert(44%) sepia(58%) saturate(3969%) hue-rotate(246deg) brightness(86%) contrast(91%)';
-            this.score = 5;
+            this.score = 3;
         }
     }
 
@@ -209,7 +219,7 @@ function KeyRelease(event) {
 window.addEventListener("keydown", KeyPress);
 window.addEventListener("keyup", KeyRelease);
 
-const ship = new Ship(player=2);
+const ship = new Ship(player=1);
 const bullets = [];
 const aliens = [];
 
@@ -217,8 +227,11 @@ let score = 0;
 
 const addScore = (points) => {
     score += points;
-    console.log(score);
+    var element = document.getElementById("red-score");
+    element.textContent = "Score: " + score;
 };
+
+
 const removeAlien = (alien) => {
     aliens.splice(aliens.indexOf(alien), 1);
     alien.explode();
@@ -263,8 +276,8 @@ for (let row = 0 ; row <= Aliens_Rows; row++){
     }
 }
 // Creating a bullet
-const createBullet = ({x, y}) => {
-    bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20}));
+const createBullet = ({x, y, player}) => {
+    bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20, player: player}));
 }
 
 
