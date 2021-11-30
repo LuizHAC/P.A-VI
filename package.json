@@ -1,0 +1,24 @@
+{
+  "name": "p.a-vi",
+  "version": "1.0.0",
+  "description": "This repository contains the game developed for the Computer Engineering V.I. course. To develop the project, we were given the challenge of creating a web application using ONLY JavaScript, HTML and CSS, and using SOCKET.IO to create a connection between the server and the clients. So, we chose to recreate the Space Invaders game, the big hit of the 80's! The game is simple, consisting of a spaceship, controlled by the user, facing aliens in an invasion in a totally space thematic.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuizHAC/P.A-VI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuizHAC/P.A-VI/issues"
+  },
+  "homepage": "https://github.com/LuizHAC/P.A-VI#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.4.0"
+  }
+}
