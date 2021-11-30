@@ -21,3 +21,65 @@ White: #FFFFFF
     background-position: top;
   }
 
+  /*SCORE BAR*/
+  .status_bar{
+    display: flex;
+    margin: 0;
+    width: 100vw;
+    min-width: 300px;
+    flex-wrap: wrap;
+    min-height: 50px;
+}
+.red_team,
+.blue_team{
+    display: flex;
+    width: 50%;
+    min-width: 300px;
+    justify-content: space-evenly;
+    align-items: center;
+    opacity: 0.3;
+}
+
+.red_team{
+    background: #AB0103;
+}
+.blue_team{
+    background: #0E08f6;
+}
+
+.score, 
+.lives{
+    display: flex;
+    color: white;
+    font-size: 1.5em;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.red_team .score a{
+    color: white;
+    font-weight: 900;
+}
+
+.blue_team .score a{
+    color: white;
+    font-weight: 900;
+}
+
+.lives ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+}
+.lives ul li{
+    margin: 10px;
+}
+
+
+@media (max-width: 600px){
+    .red_team,
+    .blue_team{
+        width: 100%;
+    }
+}
+

@@ -1,3 +1,11 @@
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+
 // Creating the Entity class
 class Entity {
     constructor({ tag = 'div', className = '' } = {}) {
@@ -21,6 +29,11 @@ class Entity {
     remove() {
       this.el.remove();
       this.el = null;
+    }
+
+    // Explosion animation
+    explode(){
+        this.el.src = '../../Assets/Game/explosion.png';
     }
   }
 
@@ -81,7 +94,7 @@ class Bullet extends Entity{
 
 // Creating the Alien class
 class Alien extends Entity{
-    constructor({x, y, type, getOverlapBullet, removeAlien, removeBullet}){
+    constructor({x, y, type, getOverlapBullet, removeAlien, removeBullet, addScore}){
         super({tag: 'img'});
         this.setImage(type);
         this.direction = 'left';
@@ -90,24 +103,29 @@ class Alien extends Entity{
         this.getOverlapBullet = getOverlapBullet;
         this.removeAlien = removeAlien;
         this.removeBullet = removeBullet;
+        this.addScore = addScore;
     }
 
     // Setting the alien image using it's row
     setImage(type){
         if(type == 1){
             this.el.src = '../../Assets/Game/enemy1.png';
+            this.score = 50;
         }
         else if(type == 2){
             this.el.src = '../../Assets/Game/enemy2.png';
             this.el.style.filter = 'invert(100%) sepia(31%) saturate(4000%) hue-rotate(54deg) brightness(100%) contrast(82%)';
+            this.score = 30;
         }
         else if(type == 3){
             this.el.src = '../../Assets/Game/enemy3.png';
             this.el.style.filter = 'invert(82%) sepia(47%) saturate(566%) hue-rotate(9deg) brightness(97%) contrast(84%)';
+            this.score = 15;
         }
         else if(type == 4){
             this.el.src = '../../Assets/Game/enemy4.png';
             this.el.style.filter = 'invert(44%) sepia(58%) saturate(3969%) hue-rotate(246deg) brightness(86%) contrast(91%)';
+            this.score = 5;
         }
     }
 
@@ -134,6 +152,7 @@ class Alien extends Entity{
 
         const overlap = this.getOverlapBullet(this);
         if (overlap){
+            this.addScore(this.score);
             this.removeAlien(this);
             this.removeBullet(overlap);
         }
@@ -181,8 +200,15 @@ const ship = new Ship();
 const bullets = [];
 const aliens = [];
 
+let score = 0;
+
+const addScore = (points) => {
+    score += points;
+    console.log(score);
+};
 const removeAlien = (alien) => {
     aliens.splice(aliens.indexOf(alien), 1);
+    alien.explode();
     alien.remove();
 }
 
@@ -219,7 +245,7 @@ const Aliens_Cols = 9;
 // Creating the enemies
 for (let row = 0 ; row <= Aliens_Rows; row++){
     for (let col = 0; col <= Aliens_Cols; col++){
-        const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row, getOverlapBullet, removeAlien, removeBullet});
+        const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row, getOverlapBullet, removeAlien, removeBullet, addScore});
         aliens.push(alien);
     }
 }
