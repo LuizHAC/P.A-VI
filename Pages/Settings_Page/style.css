@@ -1,0 +1,47 @@
+/*
+COLORS:
+Red: #AB0103
+Yellow: #ece912
+Blue: #0E08f6
+Green: #56E868
+Purple: #9750D3
+White: #FFFFFF
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100%;
+    background-image:  url("../../Assets/UI/bg.jpg");
+    background-size: cover;
+    background-position: top;
+  }
+
+  .logo-box {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    top: 40px;
+    text-align: center;
+  }
+
+  .logo {
+    height: 250px;
+  }
+
+  .menu {
+    margin-top: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    position: relative;
+  }
+  
+
+
+  

@@ -9,3 +9,8 @@ function playMusic(){
     var myMusic = document.getElementById("music")
     myMusic.play();
 }
+
+// Loads the menu
+function loadMenu(){
+    setTimeout( () => window.location.href = "../Settings_Page/index.html", 1000);
+}

@@ -40,15 +40,28 @@ class Entity {
   // Creating the ship class and inheriting from the Entity class to set class name, positions, creat elements and setPosition
 class Ship  extends Entity{
     constructor() {
-        super({className: 'ship', tag: 'img'});
-        this.el.src = '../../Assets/Game/ship.png';
+        super({className: 'ship', tag: 'img', player});
 
+        this.player = player
+        this.setShip()
         this.speed = 2;
         this.canShot = true;
         this.el.className = 'ship';
         this.setPosition(window.innerWidth / 2, window.innerHeight - 120)
     }
 
+    // Set the space ship color
+    setShip(){
+        this.el.src = '../../Assets/Game/ship.png';
+
+        if (player == 1){
+            this.el.style.filter = 'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8)';
+        }
+
+        if (player == 2){
+            this.el.style.filter = 'sepia(100%) hue-rotate(140deg) brightness(60%) saturate(1000%)';
+        }
+    }
     // Move the ship to the right and to the left
     moveRight(){
         this.setPosition(this.x + this.speed, this.y);
@@ -196,7 +209,7 @@ function KeyRelease(event) {
 window.addEventListener("keydown", KeyPress);
 window.addEventListener("keyup", KeyRelease);
 
-const ship = new Ship();
+const ship = new Ship(player=2);
 const bullets = [];
 const aliens = [];
 
