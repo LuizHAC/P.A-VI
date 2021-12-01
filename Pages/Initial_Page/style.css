@@ -15,11 +15,13 @@ White: #FFFFFF
   }
   
   body {
+    padding: 0px;
     background-image:  url("../../Assets/UI/bg.jpg");
     background-size: 100%;
     background-position: center;
   }
-
+  
+  
   .logo-box {
     top: 40px;
     text-align: center;
