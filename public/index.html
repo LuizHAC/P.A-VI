@@ -8,7 +8,7 @@
         
         <link rel="stylesheet" href="style.css">
         
-        <link rel="icon" href="../../Assets/UI/icon_gif.gif" width=32px type="image/gif">
+        <link rel="icon" href="../Assets/UI/icon_gif.gif" width=32px type="image/gif">
 
         <title>Space Invaders</title>
         <script src="/socket.io/socket.io.js"></script>
@@ -24,16 +24,16 @@
                 <div class="lives">
                     Vidas:
                     <ul>
-                        <li><img src="../../Assets/Game/ship.png" class="life"/></li>
-                        <li><img src="../../Assets/Game/ship.png" class="life"></li>
-                        <li><img src="../../Assets/Game/ship.png" class="life"></li>
+                        <li><img src="../Assets/Game/ship.png" class="life"/></li>
+                        <li><img src="../Assets/Game/ship.png" class="life"></li>
+                        <li><img src="../Assets/Game/ship.png" class="life"></li>
                     </ul>
                 </div>
             </div>
 
             <div class="options">
                 <a href="#" onclick="loadMenu()">
-                    <img src="../../Assets/UI/hamburg.png" />
+                    <img src="../Assets/UI/hamburg.png" />
                 </a>    
             </div>
             
@@ -44,9 +44,9 @@
                 <div class="lives">
                     Vidas:
                     <ul>
-                        <li><img src="../../Assets/Game/ship.png" class="life"/></li>
-                        <li><img src="../../Assets/Game/ship.png" class="life"></li>
-                        <li><img src="../../Assets/Game/ship.png" class="life"></li>
+                        <li><img src="../Assets/Game/ship.png" class="life"/></li>
+                        <li><img src="../Assets/Game/ship.png" class="life"></li>
+                        <li><img src="../Assets/Game/ship.png" class="life"></li>
                     </ul>
                 </div>
             </div>
@@ -54,8 +54,8 @@
         
         <!--<script src="main.js"></script>-->
         <script type="module">
-            import createGame from '../../public/game.js'
-            import createKeyboardListener from '../../public/keyboard-listener.js'
+            import createGame from '../public/game.js'
+            import createKeyboardListener from '../public/keyboard-listener.js'
             
             const game = createGame()
             const keyboardListener = createKeyboardListener(document)
