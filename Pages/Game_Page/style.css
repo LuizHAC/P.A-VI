@@ -82,3 +82,9 @@ White: #FFFFFF
         width: 30%;
         color: white;
     }
+
+    .menu-hamburg {
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
