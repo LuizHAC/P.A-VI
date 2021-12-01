@@ -62,8 +62,41 @@
 
             const socket = io()
 
-            
+            socket.on('disconnect', () => {
+                console.log('Unsubscribing All')
+                keyboardListener.unsubscribeAll();
+            })
 
+            socket.on('setup', (state) => {
+                const playerId = socket.id
+                game.setState(state)
+
+                keyboardListener.registerPlayerId(playerId)
+                keyboardListener.subscribe(game.movePlayer)
+                keyboardListener.subscribe((command) => {
+                    socket.emit('move-player', command)
+                })
+            })
+
+            socket.on('add-player', (command) => {
+                // console.log(`Receiving ${command.type} -> ${command.playerId}`)
+                game.addPlayer(command)
+            })
+
+            socket.on('remove-player', (command) => {
+                // console.log(`Receiving ${command.type} -> ${command.playerId}`)
+                game.removePlayer(command)
+            })
+
+            socket.on('move-player', (command) => {
+                // console.log(`Receiving ${command.type} -> ${command.playerId}`)
+
+                const playerId = socket.id
+
+                if (playerId !== command.playerId) {
+                    game.movePlayer(command)
+                }
+            })
         </script>
     </body>
 </html>
