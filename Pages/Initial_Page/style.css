@@ -16,14 +16,11 @@ White: #FFFFFF
   
   body {
     padding: 0px;
-  }
-  
-  .header {
-    height: 100vh;
     background-image:  url("../../Assets/UI/bg.jpg");
     background-size: cover;
     background-position: top;
   }
+  
   
   .logo-box {
     display: block;
