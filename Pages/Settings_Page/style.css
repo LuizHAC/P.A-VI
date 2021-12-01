@@ -42,6 +42,70 @@ White: #FFFFFF
     position: relative;
   }
   
+  .box {
+    background-color: #ece912;
+    box-shadow: 10px 10px #AB0103;
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    display: inline-block;
+    position: absolute;
+    margin-left: 33%;
+    margin-top: 90px;
+    text-align: center;
+  }
+
+  .button {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 12px 50px;
+    padding-bottom: 20px;
+    font-size: 20px;
+    width: 250px;
+  }
+
+  .btn:link,
+  .btn:visited {
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 15px 50px;
+      display: inline-block;
+      border-radius: 100px;
+      transition: all .2s;
+      position: relative;
+      
+  }
+  
+  .btn-yellow {
+      background-color: #ece912;
+      color: rgb(0, 0, 0);
+      font-size: 20px;
+      box-shadow: 0 9px #AB0103;
+  }
+
+  .btn-yellow:hover {background-color: #ccc91f}
+  
+  .btn-yellow:active {
+    background-color: #ece912;
+    box-shadow: 0 5px #AB0103;
+    transform: translateY(4px);
+  }
+
+  .btn::after {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      border-radius: 100px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      transition: all .4s;
+  }
 
 
   
