@@ -15,20 +15,12 @@ White: #FFFFFF
   }
   
   body {
-    padding: 0px;
-  }
-  
-  .header {
-    height: 100vh;
     background-image:  url("../../Assets/UI/bg.jpg");
-    background-size: cover;
-    background-position: top;
+    background-size: 100%;
+    background-position: center;
   }
-  
+
   .logo-box {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
     top: 40px;
     text-align: center;
   }
@@ -38,20 +30,21 @@ White: #FFFFFF
   }
   
   .button-box {
-    display: inline-block;
     position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    right: 44%;
+    width: 100%;
     top: 550px;
     text-align: center;
   }
   
   .button-play {
     padding: 15px 50px;
-    padding-bottom: 20px;
-    font-size: 20px;
-    width: 250px;
+    padding-bottom: 30px;
+    font-size: 60px;
+
+  }
+
+  .button-settings {
+    font-size: 30px;
   }
   
   .btn:link,
@@ -62,14 +55,11 @@ White: #FFFFFF
       display: inline-block;
       border-radius: 100px;
       transition: all .2s;
-      position: relative;
-      
   }
   
   .btn-yellow {
       background-color: #ece912;
       color: rgb(0, 0, 0);
-      font-size: 20px;
       box-shadow: 0 9px #AB0103;
   }
 
