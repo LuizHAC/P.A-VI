@@ -11,6 +11,7 @@
         <link rel="icon" href="../../Assets/UI/icon_gif.gif" width=32px type="image/gif">
 
         <title>Space Invaders</title>
+        <script src="/socket.io/socket.io.js"></script>
     </head>
     
     <body>
@@ -51,9 +52,18 @@
             </div>
         </div>
         
-        <script src="main.js"></script>
-        
+        <!--<script src="main.js"></script>-->
+        <script type="module">
+            import createGame from '../../public/game.js'
+            import createKeyboardListener from '../../public/keyboard-listener.js'
+            
+            const game = createGame()
+            const keyboardListener = createKeyboardListener(document)
 
-         
+            const socket = io()
+
+            
+
+        </script>
     </body>
 </html>

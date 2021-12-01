@@ -269,12 +269,13 @@ const Aliens_Rows = 4;
 const Aliens_Cols = 9;
 
 // Creating the enemies
-for (let row = 0 ; row <= Aliens_Rows; row++){
+for (let row = 1 ; row <= Aliens_Rows; row++){
     for (let col = 0; col <= Aliens_Cols; col++){
         const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row, getOverlapBullet, removeAlien, removeBullet, addScore});
         aliens.push(alien);
     }
 }
+
 // Creating a bullet
 const createBullet = ({x, y, player}) => {
     bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20, player: player}));
