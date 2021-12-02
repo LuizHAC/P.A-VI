@@ -64,34 +64,36 @@ White: #FFFFFF
   }
 
   .button1 {
-    background: #cecb0e;
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 20px;
-    border-radius: 16px;
     padding: 12px 50px;
     padding-bottom: 20px;
     font-size: 20px;
-    width: 250px;
   }
 
   .button2 {
-    background: #cecb0e;
     margin-right: auto;
     margin-left: auto;
-    border-radius: 16px;
     padding: 12px 50px;
     padding-bottom: 20px;
     font-size: 20px;
-    width: 250px;
   }
 
-  .btn-play {
+  .btn-sound {
+    background: #cecb0e;
+    border-radius: 16px;
+    padding: 12px 50px;
+    padding-bottom: 20px;
     color: rgb(0, 0, 0);
     text-decoration: none;
   }
 
-  .btn-setting {
+  .btn-back {
+    background: #cecb0e;
+    border-radius: 16px;
+    padding: 12px 50px;
+    padding-bottom: 20px;
     color: rgb(0, 0, 0);
     text-decoration: none;
   }
