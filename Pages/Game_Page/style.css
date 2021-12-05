@@ -9,8 +9,8 @@ White: #FFFFFF
 */
 
 *   {
-        margin: 0;
-        padding: 0;
+        margin: 0vw;
+        padding: 0vw;
         box-sizing: border-box;
     }
   
@@ -24,12 +24,13 @@ White: #FFFFFF
     /*SCORE BAR*/
     .status_bar{
         display: flex;
+        height: 3vw;
     }
 
     .red_team,
     .blue_team{
         display: flex;
-        width: 48.5%;
+        width: 48.5vw;
         justify-content: space-evenly;
         align-items: center;
     }
@@ -46,18 +47,18 @@ White: #FFFFFF
     .lives{
         display: flex;
         color: white;
-        font-size: 1.5em;
+        font-size: 1.8vw;
         justify-content: space-evenly;
         align-items: center;
     }
     .red_team .score a{
         color: white;
-        font-weight: 900;
+        font-weight: 64vw;
     }
 
     .blue_team .score a{
         color: white;
-        font-weight: 900;
+        font-weight: 64vw;
     }
 
     .lives ul{
@@ -67,24 +68,23 @@ White: #FFFFFF
         list-style: none;
     }
     .lives ul li{
-        margin: 10px;
+        margin: 0.7vw;
     }
 
-
-    @media (max-width: 600px){
-        .red_team,
-        .blue_team{
-            width: 100%;
-        }
-    }
-
-    .life {
-        width: 30%;
+    .life{
+        width: 1.8vw;
         color: white;
     }
 
-    .menu-hamburg {
-        margin-top: 5px;
-        margin-left: 10px;
-        margin-right: 10px;
+    .options
+    .hamburg{
+        width: 3vw;
+    }
+
+    .ship{
+        width: 4vw;
+    }
+
+    .alien{
+        width: 3.5vw;
     }

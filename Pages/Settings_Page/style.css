@@ -9,8 +9,8 @@ White: #FFFFFF
 */
 
 * {
-    margin: 0;
-    padding: 0;
+    margin: 0vw;
+    padding: 0vw;
     box-sizing: border-box;
   }
   
@@ -22,78 +22,63 @@ White: #FFFFFF
   }
 
   .logo-box {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    top: 40px;
+    top: 2.85vw;
     text-align: center;
   }
 
   .logo {
-    height: 250px;
+    height: 18vw;
   }
 
   .menu {
-    margin-top: 100px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 20%;
-    position: relative;
-  }
-
-  p {
-    font-size: 40px;
-    margin-bottom: 20px;
+    margin-top: 7.2vw;
+    width: 20vw;
   }
   
   .box {
     background-color: #ece912;
-    box-shadow: 10px 10px #AB0103;
-    border-radius: 16px;
-    padding: 30px;
-    margin-top: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;
-    display: inline-block;
-    position: absolute;
-    margin-left: 33%;
-    margin-top: 90px;
+    box-shadow: 0.72vw 0.72vw #AB0103;
+    border-radius: 1.15vw;
+    padding: 2.2vw;
+    margin-top: 5vw;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    width: 30vw;
     text-align: center;
   }
 
+  p {
+    font-size: 2.8vw;
+    margin-bottom: 1.4vw;
+  }
+
   .button1 {
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 20px;
-    padding: 12px 50px;
-    padding-bottom: 20px;
-    font-size: 20px;
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.4vw;
+    font-size: 1.8vw;
+    margin-bottom: 1.4vw;
   }
 
   .button2 {
-    margin-right: auto;
-    margin-left: auto;
-    padding: 12px 50px;
-    padding-bottom: 20px;
-    font-size: 20px;
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.4vw;
+    font-size: 1.8vw;
   }
 
   .btn-sound {
     background: #cecb0e;
-    border-radius: 16px;
-    padding: 12px 50px;
-    padding-bottom: 20px;
+    border-radius: 1.14vw;
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.2vw;
     color: rgb(0, 0, 0);
     text-decoration: none;
   }
 
   .btn-back {
     background: #cecb0e;
-    border-radius: 16px;
-    padding: 12px 50px;
-    padding-bottom: 20px;
+    border-radius: 1.14vw;
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.2vw;
     color: rgb(0, 0, 0);
     text-decoration: none;
   }

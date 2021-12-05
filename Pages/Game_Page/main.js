@@ -6,11 +6,12 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 
+//window.resizeBy(1980,1080);
+
 // Creating the Entity class
 class Entity {
-    constructor({ tag = 'div', className = '' } = {}) {
+    constructor({ tag = 'div'} = {}) {
         this.el = document.createElement(tag);
-        this.el.className = 'entity ' + className;
         this.el.style.position = 'absolute';
         document.body.appendChild(this.el);
     }
@@ -20,9 +21,9 @@ class Entity {
         this.x = x;
         this.y = y;
 
-        this.el.style.left = `${this.x}px`;
+        this.el.style.left = `${this.x}vw`;
         this.el.style.position = 'absolute';
-        this.el.style.top = `${this.y}px`;
+        this.el.style.top = `${this.y}vw`;
     }
     
     // Remove this element
@@ -40,14 +41,14 @@ class Entity {
 // Creating the ship class and inheriting from the Entity class to set class name, positions, creat elements and setPosition
 class Ship  extends Entity{
     constructor() {
-        super({className: 'ship', tag: 'img', player});
+        super({tag: 'img', player});
 
         this.player = player
         this.setShip()
-        this.speed = 2;
+        this.speed = 0.15;
         this.canShot = true;
         this.el.className = 'ship';
-        this.setPosition(window.innerWidth / 2, window.innerHeight - 120)
+        this.setPosition(48, 40)
     }
 
     // Set the space ship color
@@ -89,14 +90,14 @@ class Ship  extends Entity{
 // Creating the Bullet class
 class Bullet extends Entity{
     constructor({x, y, id}){
-        super({className: 'bullet'});
+        super();
 
-        this.speed = 2;
+        this.speed = 0.14;
         this.id = id
         this.el.className = 'bullet';
         this.setColor()
-        this.el.style.width = `${10}px`;
-        this.el.style.height = `${15}px`;
+        this.el.style.width = `${0.7}vw`;
+        this.el.style.height = `${1}vw`;
 
         this.setPosition(x, y);
     }
@@ -125,18 +126,21 @@ class Bullet extends Entity{
 
 // Creating the Alien class
 class Alien extends Entity{
-    constructor({x, y, type, getOverlapBullet, removeAlien, removeBullet, addScore}){
+    constructor({x, y, type, getOverlapBullet, removeAlien, removeBullet, addScore, row, col}){
         super({tag: 'img'});
 
         this.setImage(type);
         this.direction = 'left';
-        this.speed = 1.0;
+        this.speed = 0.06;
         this.setPosition(x, y);
         this.getOverlapBullet = getOverlapBullet;
         this.removeAlien = removeAlien;
         this.removeBullet = removeBullet;
         this.addScore = addScore;
         this.canShot = true;
+        this.el.className = 'alien';
+        this.row = row;
+        this.col = col;
     }
 
     // Setting the alien image using it's row
@@ -288,12 +292,12 @@ const getOverlapBullet = (entity) => {
 }
 
 const Aliens_Rows = 4;
-const Aliens_Cols = 9;
+const Aliens_Cols = 10;
 
 // Creating the enemies
-for (let row = 0 ; row <= Aliens_Rows; row++){
-    for (let col = 0; col <= Aliens_Cols; col++){
-        const alien = new Alien({x: col * 150 + 250, y:row * 100 + 10, type:row, getOverlapBullet, removeAlien, removeBullet, addScore});
+for (let row = 1 ; row <= Aliens_Rows; row++){
+    for (let col = 1; col <= Aliens_Cols; col++){
+        const alien = new Alien({x: col * 7 + 23, y:row * 6, type:row, getOverlapBullet, removeAlien, removeBullet, addScore, row, col});
         aliens.push(alien);
     }
 }
@@ -301,9 +305,9 @@ for (let row = 0 ; row <= Aliens_Rows; row++){
 // Creating a bullet
 const createBullet = ({x, y, id}) => {
     if(id == 0){
-        bullets.push(new Bullet({x: x + 49, y: y + 80, id: id}));
+        bullets.push(new Bullet({x: x + 1.65, y: y + 2.5, id: id}));
     } else {
-        bullets.push(new Bullet({x: x + 43.5, y: y - 20, id: id}));
+        bullets.push(new Bullet({x: x + 1.65, y: y - 0.5, id: id}));
     }
 }
 
@@ -325,23 +329,51 @@ const getClosestAlien = (direction) => {
         });
     };
     if(direction === 'down'){
-        return aliens.reduce((higherAlien, currentAlien) => {
-            return currentAlien.y > higherAlien.y
+        return aliens.reduce((lohestAlien, currentAlien) => {
+            return currentAlien.y > lohestAlien.y
             ? currentAlien
-            : higherAlien;
+            : lohestAlien;
         });
     };
 };
 
 // Selecting aliens anda generating bullets
 const aliensBullets = () => {
-    const closestAlienHigher = getClosestAlien('down');
-    closestAlienHigher.shot({createBullet, x: closestAlienHigher.x, y:closestAlienHigher.y, id: 0});
+    let lowestAlienPerCol = []
+    let aliensQuantity = 0;
+    for (let col = 1; col <= Aliens_Cols; col++){
+        let aliensPerCol = []
+        let number = 0;
+        aliens.forEach((alien) => {
+            if (alien.col == col) {
+                aliensPerCol.push(alien);
+                number++;
+            }
+        });
+        
+        if (number > 0){
+            let lowestAlien = (aliensPerCol.reduce((lowestAlien, currentAlien) => {
+                return currentAlien.y > lowestAlien.y
+                ? currentAlien
+                : lowestAlien;
+            }));
+
+            lowestAlienPerCol.push(lowestAlien);
+            aliensQuantity++;
+        }
+    }
+    console.log(lowestAlienPerCol)
+    for (let shots = 0; shots < 2; shots++) {
+        let alienShot = lowestAlienPerCol.at(Math.floor(Math.random() * ((aliensQuantity - 1) - 0)) + 0)
+        alienShot.shot({createBullet, x: alienShot.x, y: alienShot.y, id: 0});
+    }
+    
 }
 
 // Updating the ship and bullet position
+let alienCanShot = true
 const update = () => {
-    if (keys.right && ship.x < window.innerWidth - 100){
+    if (keys.right && ship.x < 96){
         ship.moveRight();
     }
     else if (keys.left && ship.x > 0){
@@ -357,9 +389,9 @@ const update = () => {
     bullets.forEach((bullet) => {
         bullet.update();
     
-        if (bullet.y < 50 || bullet.y > window.innerHeight - 20) {
-          bullet.remove();
-          bullets.splice(bullets.indexOf(bullet), 1);
+        if (bullet.y < 3 || bullet.y > 43) {
+            bullet.remove();
+            bullets.splice(bullets.indexOf(bullet), 1);
         }
     });
 
@@ -371,23 +403,27 @@ const update = () => {
     const closestAlienLeft = getClosestAlien('left');
     const closestAlienRight = getClosestAlien('right');
     
-
-    if(closestAlienLeft.x < 30){ 
+    if(closestAlienLeft.x < 0){ 
         aliens.forEach((alien) => {
             alien.moveRight();
             alien.moveDown();
         }) 
     }
 
-    if(closestAlienRight.x > window.innerWidth - 120){
+    if(closestAlienRight.x > 96){
         aliens.forEach((alien) => {
             alien.moveLeft();
             alien.moveDown();
         }) 
     }
 
-    aliensBullets();
-    
+    if(alienCanShot){
+        alienCanShot = false;
+        aliensBullets();
+        setTimeout( () => {
+            alienCanShot = true;
+        }, 2000);
+    }
 };
 
 setInterval(update, 0.2);

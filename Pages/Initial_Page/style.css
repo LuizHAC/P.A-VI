@@ -9,79 +9,79 @@ White: #FFFFFF
 */
 
 * {
-    margin: 0;
-    padding: 0;
+    margin: 0vw;
+    padding: 0vw;
     box-sizing: border-box;
   }
-  
+
   body {
-    padding: 0px;
+    padding: 0vw;
     background-image:  url("../../Assets/UI/bg.jpg");
     background-size: 100%;
     background-position: center;
   }
-  
-  
+
   .logo-box {
-    top: 40px;
+    top: 2.85vw;
     text-align: center;
   }
   
   .logo {
-    height: 250px;
+    height: 18vw;
   }
   
   .button-box {
     position: absolute;
     width: 100%;
-    top: 550px;
+    top: 26vw;
     text-align: center;
+    font-size: 2vw;
   }
   
   .button-play {
-    padding: 15px 50px;
-    padding-bottom: 30px;
-    font-size: 60px;
-
+    padding-bottom: 2vw;
+    font-size: 2.6vw;
   }
 
   .button-settings {
-    font-size: 30px;
+    font-size: 1.8vw;
   }
   
   .btn:link,
   .btn:visited {
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 15px 50px;
-      display: inline-block;
-      border-radius: 100px;
-      transition: all .2s;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1vw 3.5vw;
+    display: inline-block;
+    border-radius: 7.2vw;
+    transition: all .2s;
   }
   
   .btn-yellow {
-      background-color: #ece912;
-      color: rgb(0, 0, 0);
-      box-shadow: 0 9px #AB0103;
+    background-color: #ece912;
+    color: rgb(0, 0, 0);
+    box-shadow: 0 0.65vw #AB0103;
   }
 
-  .btn-yellow:hover {background-color: #ccc91f}
+  .btn-yellow:hover {
+    background-color: #ccc91f
+  }
   
   .btn-yellow:active {
     background-color: #ece912;
-    box-shadow: 0 5px #AB0103;
-    transform: translateY(4px);
+    box-shadow: 0 0.35vw #AB0103;
+    transform: translateY(0.28vw);
   }
 
   .btn::after {
-      content: "";
-      display: inline-block;
-      height: 100%;
-      width: 100%;
-      border-radius: 100px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      transition: all .4s;
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 7.2vw;
+    position: absolute;
+    top: 0vw;
+    left: 0vw;
+    z-index: -1;
+    transition: all .4s;
   }
