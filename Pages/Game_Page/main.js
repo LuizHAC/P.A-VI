@@ -82,7 +82,7 @@ class Ship  extends Entity{
             createBullet({x: x, y: y, id});
             setTimeout( () => {
                 this.canShot = true;
-            }, 500);
+            }, .2);
         }
     }
 }
@@ -248,7 +248,7 @@ window.addEventListener("keyup", KeyRelease);
 const ship = new Ship(player=1);
 const bullets = [];
 const aliens = [];
-
+let game = true;
 let score = 0;
 
 const addScore = (points) => {
@@ -362,13 +362,28 @@ const aliensBullets = () => {
             aliensQuantity++;
         }
     }
-    console.log(lowestAlienPerCol)
+
     for (let shots = 0; shots < 2; shots++) {
         let alienShot = lowestAlienPerCol.at(Math.floor(Math.random() * ((aliensQuantity - 1) - 0)) + 0)
         alienShot.shot({createBullet, x: alienShot.x, y: alienShot.y, id: 0});
     }
     
 }
+
+//Win game
+const winGame = () => {
+    window.location.replace('file:///C:/Users/gabri/Desktop/Facens/2021S6/3.0_Projeto_Aplicado_VI/P.A-VI/Pages/Game_Page/End_Game/win.html');
+    game = false;
+    return;
+}
+
+//Lose game
+const loseGame = () => {
+    window.location.replace('file:///C:/Users/gabri/Desktop/Facens/2021S6/3.0_Projeto_Aplicado_VI/P.A-VI/Pages/Game_Page/End_Game/lose.html');
+    game = false;
+    return;
+}
+
 
 // Updating the ship and bullet position
 let alienCanShot = true
@@ -385,7 +400,7 @@ const update = () => {
         ship.shot({createBullet, x: ship.x, y: ship.y, id: 1});
     }
 
-    // For each bullet, if y <0, remove this element
+    // For each bullet, remove the element when exceeds the limits
     bullets.forEach((bullet) => {
         bullet.update();
     
@@ -398,7 +413,13 @@ const update = () => {
     // For each alien, if alien collide to the wall, change its direction
     aliens.forEach((alien) => {
         alien.update();
-    })
+
+        // Set lose if alien y
+        if (alien.y >= 40) {
+            game = false;
+            loseGame();
+        }
+    });
 
     const closestAlienLeft = getClosestAlien('left');
     const closestAlienRight = getClosestAlien('right');
@@ -426,4 +447,6 @@ const update = () => {
     }
 };
 
-setInterval(update, 0.2);
+if(game){
+    setInterval(update, 0.2);
+}

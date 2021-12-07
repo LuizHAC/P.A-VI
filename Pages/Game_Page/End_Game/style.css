@@ -1,0 +1,87 @@
+/*
+COLORS:
+Red: #AB0103
+Yellow: #ece912
+Blue: #0E08f6
+Green: #56E868
+Purple: #9750D3
+White: #FFFFFF
+*/
+
+* {
+    margin: 0vw;
+    padding: 0vw;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100%;
+    background-image:  url("../../../Assets/UI/bg.jpg");
+    background-size: cover;
+    background-position: top;
+  }
+
+  .logo-box {
+    top: 2.85vw;
+    text-align: center;
+  }
+
+  .logo {
+    height: 18vw;
+  }
+
+  .menu {
+    margin-top: 7.2vw;
+    width: 20vw;
+  }
+  
+  .box {
+    background-color: #ece912;
+    box-shadow: 0.72vw 0.72vw #AB0103;
+    border-radius: 1.15vw;
+    padding: 2.2vw;
+    margin-top: 5vw;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    width: 30vw;
+    text-align: center;
+  }
+
+  p {
+    font-size: 2.8vw;
+    margin-bottom: 1.4vw;
+  }
+
+  .button1 {
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.4vw;
+    font-size: 1.8vw;
+    margin-bottom: 1.4vw;
+  }
+
+  .button2 {
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.4vw;
+    font-size: 1.8vw;
+  }
+
+  .btn-sound {
+    background: #cecb0e;
+    border-radius: 1.14vw;
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.2vw;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+
+  .btn-back {
+    background: #cecb0e;
+    border-radius: 1.14vw;
+    padding: 0.85vw 3.5vw;
+    padding-bottom: 1.2vw;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+
+
+  
