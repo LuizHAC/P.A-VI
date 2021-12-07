@@ -83,8 +83,76 @@ White: #FFFFFF
 
     .ship{
         width: 4vw;
+        z-index: 10;
     }
 
     .alien{
         width: 3.5vw;
+    }
+
+    .end{
+        background-color: #ece912;
+        box-shadow: 0.72vw 0.72vw #AB0103;
+        border-radius: 1.15vw;
+        padding: 2.2vw;
+        margin-top: 8vw;
+        margin-left: 35vw;
+        margin-right: 35vw;
+        width: 30vw;
+        text-align: center;
+        z-index: 20;
+        position: absolute;
+        opacity: 0;
+    }
+
+    p{
+        font-size: 2.8vw;
+        margin-bottom: 1.4vw;
+    }
+
+    .button1{
+        padding: 0.85vw 3.5vw;
+        padding-bottom: 1.4vw;
+        font-size: 1.8vw;
+        margin-bottom: 1.4vw;
+    }
+
+    .button2{
+        padding: 0.85vw 3.5vw;
+        padding-bottom: 1.4vw;
+        font-size: 1.8vw;
+        margin-bottom: 1.4vw;
+    }
+
+    .button3{
+        padding: 0.85vw 3.5vw;
+        padding-bottom: 1.4vw;
+        font-size: 1.8vw;
+    }
+
+    .end-score{
+        background: #cecb0e;
+        border-radius: 1.14vw;
+        padding: 0.85vw 3.5vw;
+        padding-bottom: 1.2vw;
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+    }
+
+    .btn-game{
+        background: #cecb0e;
+        border-radius: 1.14vw;
+        padding: 0.85vw 3.5vw;
+        padding-bottom: 1.2vw;
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+    }
+
+    .btn-back{
+        background: #cecb0e;
+        border-radius: 1.14vw;
+        padding: 0.85vw 3.5vw;
+        padding-bottom: 1.2vw;
+        color: rgb(0, 0, 0);
+        text-decoration: none;
     }

@@ -6,7 +6,13 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 
-//window.resizeBy(1980,1080);
+function loadGame(){
+    setTimeout( () => window.location.href = "../Game_Page/index.html", 0);
+}
+
+function loadMenu(){
+    setTimeout( () => window.location.href = "../Initial_Page/index.html", 0);
+}
 
 // Creating the Entity class
 class Entity {
@@ -82,7 +88,7 @@ class Ship  extends Entity{
             createBullet({x: x, y: y, id});
             setTimeout( () => {
                 this.canShot = true;
-            }, .2);
+            }, 500);
         }
     }
 }
@@ -246,14 +252,16 @@ window.addEventListener("keydown", KeyPress);
 window.addEventListener("keyup", KeyRelease);
 
 const ship = new Ship(player=1);
-const bullets = [];
 const aliens = [];
+const bullets = [];
 let game = true;
 let score = 0;
 
 const addScore = (points) => {
     score += points;
     var element = document.getElementById("red-score");
+    element.textContent = "Score: " + score;
+    var element = document.getElementById("end-score");
     element.textContent = "Score: " + score;
 };
 
@@ -363,7 +371,7 @@ const aliensBullets = () => {
         }
     }
 
-    for (let shots = 0; shots < 2; shots++) {
+    for (let shots = 0; shots < 3; shots++) {
         let alienShot = lowestAlienPerCol.at(Math.floor(Math.random() * ((aliensQuantity - 1) - 0)) + 0)
         alienShot.shot({createBullet, x: alienShot.x, y: alienShot.y, id: 0});
     }
@@ -371,19 +379,34 @@ const aliensBullets = () => {
 }
 
 //Win game
-const winGame = () => {
-    window.location.replace('file:///C:/Users/gabri/Desktop/Facens/2021S6/3.0_Projeto_Aplicado_VI/P.A-VI/Pages/Game_Page/End_Game/win.html');
+const endGame = (element) => {
     game = false;
+    var element = document.getElementById("end");
+    element.style.opacity = 1;
+
+    aliens = [];
+    bullets = [];
+    while(true){
+        sleep(1000);
+    }
+
+}
+
+//Win game
+const winGame = () => {
+    var element = document.getElementById("end-game");
+    element.textContent = "You Win";
+    endGame(element);
     return;
 }
 
 //Lose game
 const loseGame = () => {
-    window.location.replace('file:///C:/Users/gabri/Desktop/Facens/2021S6/3.0_Projeto_Aplicado_VI/P.A-VI/Pages/Game_Page/End_Game/lose.html');
-    game = false;
+    var element = document.getElementById("end-game");
+    element.textContent = "You Lose";
+    endGame(element);
     return;
 }
-
 
 // Updating the ship and bullet position
 let alienCanShot = true
@@ -400,22 +423,30 @@ const update = () => {
         ship.shot({createBullet, x: ship.x, y: ship.y, id: 1});
     }
 
-    // For each bullet, remove the element when exceeds the limits
+    // For each bullet
     bullets.forEach((bullet) => {
         bullet.update();
-    
-        if (bullet.y < 3 || bullet.y > 43) {
+
+        // Set lose if bullet hit the ship
+        if (bullet.y > 40 && (bullet.x - 0.7 > ship.x && bullet.x < ship.x + 4)) {
+            game = false;
+            loseGame();
+        }
+
+        // Remove the element when exceeds the limits
+        if (bullet.y < 3 || bullet.y > 45) {
             bullet.remove();
             bullets.splice(bullets.indexOf(bullet), 1);
         }
     });
 
-    // For each alien, if alien collide to the wall, change its direction
+    // For each alien
     aliens.forEach((alien) => {
+        // Update alien position and existence
         alien.update();
 
-        // Set lose if alien y
-        if (alien.y >= 40) {
+        // Set lose if alien run away
+        if (alien.y > 40) {
             game = false;
             loseGame();
         }
@@ -443,10 +474,8 @@ const update = () => {
         aliensBullets();
         setTimeout( () => {
             alienCanShot = true;
-        }, 2000);
+        }, 1500);
     }
 };
 
-if(game){
-    setInterval(update, 0.2);
-}
+setInterval(update, 0.2);
