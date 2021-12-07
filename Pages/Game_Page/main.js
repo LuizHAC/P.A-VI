@@ -54,7 +54,9 @@ class Ship  extends Entity{
         this.speed = 0.15;
         this.canShot = true;
         this.el.className = 'ship';
-        this.setPosition(48, 40)
+        this.setPosition(48, 40);
+        this.lifes = 3;
+        this.damage = 5;
     }
 
     // Set the space ship color
@@ -88,7 +90,17 @@ class Ship  extends Entity{
             createBullet({x: x, y: y, id});
             setTimeout( () => {
                 this.canShot = true;
-            }, 500);
+            }, 100);
+        }
+    }
+
+    hit(){
+        if(this.lifes > 1){
+            var element = document.getElementById(`red-life-${this.lifes}`);
+            element.style.opacity = 0;
+            this.lifes = this.lifes - 1;
+        } else {
+            game = false;
         }
     }
 }
@@ -147,28 +159,33 @@ class Alien extends Entity{
         this.el.className = 'alien';
         this.row = row;
         this.col = col;
+        this.life;
     }
 
     // Setting the alien image using it's row
     setImage(type){
         if(type == 1){
             this.el.src = '../../Assets/Game/enemy1.png';
-            this.score = 15;
+            this.score = 50;
+            this.life = 100;
         }
         else if(type == 2){
             this.el.src = '../../Assets/Game/enemy2.png';
             this.el.style.filter = 'invert(100%) sepia(31%) saturate(4000%) hue-rotate(54deg) brightness(100%) contrast(82%)';
-            this.score = 10;
+            this.score = 30;
+            this.life = 60;
         }
         else if(type == 3){
             this.el.src = '../../Assets/Game/enemy3.png';
             this.el.style.filter = 'invert(82%) sepia(47%) saturate(566%) hue-rotate(9deg) brightness(97%) contrast(84%)';
-            this.score = 5;
+            this.score = 15;
+            this.life = 30;
         }
         else if(type == 4){
             this.el.src = '../../Assets/Game/enemy4.png';
             this.el.style.filter = 'invert(44%) sepia(58%) saturate(3969%) hue-rotate(246deg) brightness(86%) contrast(91%)';
-            this.score = 3;
+            this.score = 5;
+            this.life = 10;
         }
     }
 
@@ -195,9 +212,15 @@ class Alien extends Entity{
 
         const overlap = this.getOverlapBullet(this);
         if (overlap && overlap.id != 0){
-            this.addScore(this.score);
-            this.removeAlien(this);
-            this.removeBullet(overlap);
+            if (this.life > ship.damage) {
+                this.life = this.life - ship.damage;
+                overlap.remove();
+                bullets.splice(bullets.indexOf(overlap), 1);
+            } else {
+                this.addScore(this.score);
+                this.removeAlien(this);
+                this.removeBullet(overlap);
+            }
         }
     }
 
@@ -229,7 +252,6 @@ const keys = {
 function KeyPress(event) {
     if (event.keyCode === KEY_RIGHT) {
         keys.right = true;
-        console.log(keys)
     } else if (event.keyCode === KEY_LEFT) {
         keys.left = true;
     } else if (event.keyCode === KEY_SPACE) {
@@ -378,21 +400,32 @@ const aliensBullets = () => {
     
 }
 
-//Win game
+// End game
 const endGame = (element) => {
     game = false;
     var element = document.getElementById("end");
     element.style.opacity = 1;
+    let del = []
 
-    aliens = [];
-    bullets = [];
-    while(true){
-        sleep(1000);
-    }
+    aliens.forEach((alien) => {
+        alien.remove();
+        del.push(alien)
+    });
+    del.forEach((alien) => {
+        aliens.splice(aliens.indexOf(alien), 1);
+    });
 
+    del = []
+    bullets.forEach((bullet) => {
+        bullet.remove();
+        del.push(bullet)
+    });
+    del.forEach((bullet) => {
+        bullets.splice(bullets.indexOf(bullet), 1);
+    });
 }
 
-//Win game
+// Win game
 const winGame = () => {
     var element = document.getElementById("end-game");
     element.textContent = "You Win";
@@ -400,7 +433,7 @@ const winGame = () => {
     return;
 }
 
-//Lose game
+// Lose game
 const loseGame = () => {
     var element = document.getElementById("end-game");
     element.textContent = "You Lose";
@@ -411,70 +444,85 @@ const loseGame = () => {
 // Updating the ship and bullet position
 let alienCanShot = true
 const update = () => {
-    if (keys.right && ship.x < 96){
-        ship.moveRight();
-    }
-    else if (keys.left && ship.x > 0){
-        ship.moveLeft();
-    }
 
-    if (keys.space){
-        // Create a bullet
-        ship.shot({createBullet, x: ship.x, y: ship.y, id: 1});
-    }
-
-    // For each bullet
-    bullets.forEach((bullet) => {
-        bullet.update();
-
-        // Set lose if bullet hit the ship
-        if (bullet.y > 40 && (bullet.x - 0.7 > ship.x && bullet.x < ship.x + 4)) {
-            game = false;
-            loseGame();
+    if(game) {
+        if (keys.right && ship.x < 96){
+            ship.moveRight();
+        }
+        else if (keys.left && ship.x > 0){
+            ship.moveLeft();
         }
 
-        // Remove the element when exceeds the limits
-        if (bullet.y < 3 || bullet.y > 45) {
-            bullet.remove();
+        if (keys.space){
+            // Create a bullet
+            ship.shot({createBullet, x: ship.x, y: ship.y, id: 1});
+        }
+
+        let delBullets = []
+        // For each bullet
+        bullets.forEach((bullet) => {
+            bullet.update();
+
+            // Set lose if bullet hit the ship
+            if (bullet.y > 40 && (bullet.x - 0.7 > ship.x && bullet.x < ship.x + 4)) {
+                ship.hit();
+                bullet.remove();
+                delBullets.push(bullet);
+            }
+
+            // Remove the element when exceeds the limits
+            if (bullet.y < 3 || bullet.y > 45) {
+                bullet.remove();
+                delBullets.push(bullet);
+            }
+        });
+
+        delBullets.forEach((bullet) => {
             bullets.splice(bullets.indexOf(bullet), 1);
-        }
-    });
+        });
 
-    // For each alien
-    aliens.forEach((alien) => {
-        // Update alien position and existence
-        alien.update();
-
-        // Set lose if alien run away
-        if (alien.y > 40) {
-            game = false;
-            loseGame();
-        }
-    });
-
-    const closestAlienLeft = getClosestAlien('left');
-    const closestAlienRight = getClosestAlien('right');
-    
-    if(closestAlienLeft.x < 0){ 
+        // For each alien
         aliens.forEach((alien) => {
-            alien.moveRight();
-            alien.moveDown();
-        }) 
-    }
+            // Update alien position and existence
+            alien.update();
 
-    if(closestAlienRight.x > 96){
-        aliens.forEach((alien) => {
-            alien.moveLeft();
-            alien.moveDown();
-        }) 
-    }
+            // Set lose if alien run away
+            if (alien.y > 40) {
+                game = false;
+                loseGame();
+            }
 
-    if(alienCanShot){
-        alienCanShot = false;
-        aliensBullets();
-        setTimeout( () => {
-            alienCanShot = true;
-        }, 1500);
+            if (aliens.length == 0){
+                winGame();
+            }
+        });
+
+        const closestAlienLeft = getClosestAlien('left');
+        const closestAlienRight = getClosestAlien('right');
+        
+        if(closestAlienLeft.x < 0){ 
+            aliens.forEach((alien) => {
+                alien.moveRight();
+                alien.moveDown();
+            }) 
+        }
+
+        if(closestAlienRight.x > 96){
+            aliens.forEach((alien) => {
+                alien.moveLeft();
+                alien.moveDown();
+            }) 
+        }
+
+        if(alienCanShot){
+            alienCanShot = false;
+            aliensBullets();
+            setTimeout( () => {
+                alienCanShot = true;
+            }, 1500);
+        }
+    } else {
+        loseGame();
     }
 };
 
