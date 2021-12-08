@@ -54,13 +54,22 @@
         
         <!--<script src="main.js"></script>-->
         <script type="module">
-            import createGame from '../public/game.js'
-            import createKeyboardListener from '../public/keyboard-listener.js'
+            import createGame from '/game.js'
+            import createKeyboardListener from '/keyboard-listener.js'
+            import renderScreen from './render-screen.js'
             
             const game = createGame()
             const keyboardListener = createKeyboardListener(document)
 
             const socket = io()
+
+            socket.on('connect', () => {
+                const playerId = socket.id
+                // console.log(`Player connected on Client with id: ${playerId}`)
+                // console.log('socket', socket)
+
+                renderScreen(game, requestAnimationFrame, playerId)
+            })
 
             socket.on('disconnect', () => {
                 console.log('Unsubscribing All')
@@ -71,6 +80,9 @@
                 const playerId = socket.id
                 game.setState(state)
 
+                game.subscribe((command) => {
+                    socket.emit('alien-shot', command)
+                })
                 keyboardListener.registerPlayerId(playerId)
                 keyboardListener.subscribe(game.movePlayer)
                 keyboardListener.subscribe((command) => {
@@ -96,6 +108,11 @@
                 if (playerId !== command.playerId) {
                     game.movePlayer(command)
                 }
+            })
+
+            socket.on('update', (command) => {
+                game.setBullets(command.state.bullets)
+                game.setAliens(command.state.aliens)
             })
         </script>
     </body>

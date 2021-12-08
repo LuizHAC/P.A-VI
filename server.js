@@ -12,20 +12,27 @@ app.use(express.static('public'))
 const game = createGame()
 
 game.subscribe((command) => {
-    console.log(`> Emitting ${command.type}`)
+    if(command.type != 'update')
+        console.log(`> Emitting ${command.type}`)
     sockets.emit(command.type, command)
 })
+
+game.startUpdate()
 
 sockets.on('connection', (socket) => {
     const playerId = socket.id
     console.log(`> Player connected: ${playerId}`)
 
-    game.AddPlayer({ playerId: playerId })
-
+    game.addPlayer({ playerId: playerId })
+    
     socket.emit('setup', game.state)
 
     socket.on('disconnect', () => {
         game.removePlayer({ playerId: playerId })
+
+        if(game.state.availablePlayers < 2)
+            game.state.aliens = []
+
         console.log(`> Player disconnected: ${playerId}`)
     })
 
@@ -34,6 +41,10 @@ sockets.on('connection', (socket) => {
         command.type = 'move-player'
 
         game.movePlayer(command)
+    })
+
+    socket.on('alien-shot', (command) => {
+        game.receiveAlienShot(command)
     })
 })
 

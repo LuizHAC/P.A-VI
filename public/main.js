@@ -281,8 +281,6 @@ const createBullet = ({x, y, player}) => {
     bullets.push(new Bullet({x: ship.x + 43.5, y: ship.y - 20, player: player}));
 }
 
-
-
 // Catch the aliens closest to crashing into the wall
 const getClosestAlien = (direction) => {
 
