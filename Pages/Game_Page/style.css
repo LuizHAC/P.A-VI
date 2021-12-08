@@ -43,7 +43,8 @@ White: #FFFFFF
         background: rgb(14, 8, 246, 0.3);
     }
 
-    .score, 
+    .score,
+    .health, 
     .lives{
         display: flex;
         color: white;

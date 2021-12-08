@@ -46,16 +46,19 @@ class Entity {
 
 // Creating the ship class and inheriting from the Entity class to set class name, positions, creat elements and setPosition
 class Ship  extends Entity{
-    constructor() {
+    constructor(player, getOverlapBullet, removeBullet) {
         super({tag: 'img', player});
 
         this.player = player
         this.setShip()
         this.speed = 0.15;
         this.canShot = true;
+        this.getOverlapBullet = getOverlapBullet;
+        this.removeBullet = removeBullet;
         this.el.className = 'ship';
         this.setPosition(48, 40);
         this.lifes = 3;
+        this.health = 100;
         this.damage = 5;
     }
 
@@ -81,33 +84,63 @@ class Ship  extends Entity{
         this.setPosition(this.x - this.speed, this.y);
     }
 
+    update(){
+        if (keys.right && ship.x < 96){
+            ship.moveRight();
+        }
+        else if (keys.left && ship.x > 0){
+            ship.moveLeft();
+        }
+        
+        if (keys.space){
+            ship.shot({createBullet, x: ship.x, y: ship.y, id: 1, damage: ship.damage});
+        }
+        
+        ship.hit();
+    }
+
+    hit(){
+        const overlap = this.getOverlapBullet(this);
+        if (overlap && overlap.id == 0){
+            if (this.health > overlap.damage) {
+                this.health = this.health - overlap.damage;
+            } else {
+                if(this.lifes > 1){
+                    var element = document.getElementById(`red-life-${this.lifes}`);
+                    element.style.opacity = 0;
+                    this.lifes = this.lifes - 1;
+                    this.health = 100;
+                } else {
+                    game = false;
+                }
+            }
+
+            var element = document.getElementById("red-health");
+            element.textContent = "Health: " + this.health + "%";
+            //overlap.remove();
+            //bullets.splice(bullets.indexOf(overlap), 1);
+            this.removeBullet(overlap);
+            console.log(this)
+        }
+    }
+
     // Creating a function to shot and to apply a cooldown between the consecutive shots
-    shot({createBullet, x, y, id}){
+    shot({createBullet, x, y, id, damage}){
         
         if(this.canShot){
             this.canShot = false;
 
-            createBullet({x: x, y: y, id});
+            createBullet({x: x, y: y, id, damage: damage});
             setTimeout( () => {
                 this.canShot = true;
-            }, 100);
-        }
-    }
-
-    hit(){
-        if(this.lifes > 1){
-            var element = document.getElementById(`red-life-${this.lifes}`);
-            element.style.opacity = 0;
-            this.lifes = this.lifes - 1;
-        } else {
-            game = false;
+            }, 400);
         }
     }
 }
 
 // Creating the Bullet class
 class Bullet extends Entity{
-    constructor({x, y, id}){
+    constructor({x, y, id, damage}){
         super();
 
         this.speed = 0.14;
@@ -116,6 +149,7 @@ class Bullet extends Entity{
         this.setColor()
         this.el.style.width = `${0.7}vw`;
         this.el.style.height = `${1}vw`;
+        this.damage = damage;
 
         this.setPosition(x, y);
     }
@@ -159,34 +193,38 @@ class Alien extends Entity{
         this.el.className = 'alien';
         this.row = row;
         this.col = col;
-        this.life;
+        this.score;
+        this.health;
+        this.damage;
     }
 
     // Setting the alien image using it's row
     setImage(type){
+        let total = 100;
+        let prop = 0;
         if(type == 1){
             this.el.src = '../../Assets/Game/enemy1.png';
-            this.score = 50;
-            this.life = 100;
+            prop = 0.5;
         }
         else if(type == 2){
             this.el.src = '../../Assets/Game/enemy2.png';
             this.el.style.filter = 'invert(100%) sepia(31%) saturate(4000%) hue-rotate(54deg) brightness(100%) contrast(82%)';
-            this.score = 30;
-            this.life = 60;
+            prop = 0.35;
         }
         else if(type == 3){
             this.el.src = '../../Assets/Game/enemy3.png';
             this.el.style.filter = 'invert(82%) sepia(47%) saturate(566%) hue-rotate(9deg) brightness(97%) contrast(84%)';
-            this.score = 15;
-            this.life = 30;
+            prop = 0.15;
         }
         else if(type == 4){
             this.el.src = '../../Assets/Game/enemy4.png';
             this.el.style.filter = 'invert(44%) sepia(58%) saturate(3969%) hue-rotate(246deg) brightness(86%) contrast(91%)';
-            this.score = 5;
-            this.life = 10;
+            prop = 0.05;
         }
+
+        this.score = prop * total;
+        this.health = prop * total;
+        this.damage = prop * total;
     }
 
     // Moving the Alien
@@ -212,8 +250,8 @@ class Alien extends Entity{
 
         const overlap = this.getOverlapBullet(this);
         if (overlap && overlap.id != 0){
-            if (this.life > ship.damage) {
-                this.life = this.life - ship.damage;
+            if (this.health > 25) {
+                this.health = this.health - 25;
                 overlap.remove();
                 bullets.splice(bullets.indexOf(overlap), 1);
             } else {
@@ -225,11 +263,10 @@ class Alien extends Entity{
     }
 
     // Creating a function to shot and to apply a cooldown between the consecutive shots
-    shot({createBullet, x, y, id}){
-        
+    shot({createBullet, x, y, id, damage}){
         if(this.canShot){
             this.canShot = false;
-            createBullet({x: x, y: y, id});
+            createBullet({x: x, y: y, id: id, damage: damage});
             setTimeout( () => {
                 this.canShot = true;
             }, 2000);
@@ -273,7 +310,6 @@ function KeyRelease(event) {
 window.addEventListener("keydown", KeyPress);
 window.addEventListener("keyup", KeyRelease);
 
-const ship = new Ship(player=1);
 const aliens = [];
 const bullets = [];
 let game = true;
@@ -321,6 +357,7 @@ const getOverlapBullet = (entity) => {
     return null;
 }
 
+const ship = new Ship(player=1, getOverlapBullet, removeBullet);
 const Aliens_Rows = 4;
 const Aliens_Cols = 10;
 
@@ -333,11 +370,11 @@ for (let row = 1 ; row <= Aliens_Rows; row++){
 }
 
 // Creating a bullet
-const createBullet = ({x, y, id}) => {
+const createBullet = ({x, y, id, damage}) => {
     if(id == 0){
-        bullets.push(new Bullet({x: x + 1.65, y: y + 2.5, id: id}));
+        bullets.push(new Bullet({x: x + 1.65, y: y + 2.5, id: id, damage: damage}));
     } else {
-        bullets.push(new Bullet({x: x + 1.65, y: y - 0.5, id: id}));
+        bullets.push(new Bullet({x: x + 1.65, y: y - 0.5, id: id, damage: damage}));
     }
 }
 
@@ -393,16 +430,14 @@ const aliensBullets = () => {
         }
     }
 
-    for (let shots = 0; shots < 3; shots++) {
+    for (let shots = 0; shots < 5; shots++) {
         let alienShot = lowestAlienPerCol.at(Math.floor(Math.random() * ((aliensQuantity - 1) - 0)) + 0)
-        alienShot.shot({createBullet, x: alienShot.x, y: alienShot.y, id: 0});
+        alienShot.shot({createBullet, x: alienShot.x, y: alienShot.y, id: 0, damage: alienShot.damage});
     }
-    
 }
 
 // End game
-const endGame = (element) => {
-    game = false;
+const endGame = () => {
     var element = document.getElementById("end");
     element.style.opacity = 1;
     let del = []
@@ -427,17 +462,17 @@ const endGame = (element) => {
 
 // Win game
 const winGame = () => {
+    game = false;
     var element = document.getElementById("end-game");
     element.textContent = "You Win";
-    endGame(element);
     return;
 }
 
 // Lose game
 const loseGame = () => {
+    game = false;
     var element = document.getElementById("end-game");
     element.textContent = "You Lose";
-    endGame(element);
     return;
 }
 
@@ -446,32 +481,15 @@ let alienCanShot = true
 const update = () => {
 
     if(game) {
-        if (keys.right && ship.x < 96){
-            ship.moveRight();
-        }
-        else if (keys.left && ship.x > 0){
-            ship.moveLeft();
-        }
-
-        if (keys.space){
-            // Create a bullet
-            ship.shot({createBullet, x: ship.x, y: ship.y, id: 1});
-        }
+        ship.update();
 
         let delBullets = []
         // For each bullet
         bullets.forEach((bullet) => {
             bullet.update();
 
-            // Set lose if bullet hit the ship
-            if (bullet.y > 40 && (bullet.x - 0.7 > ship.x && bullet.x < ship.x + 4)) {
-                ship.hit();
-                bullet.remove();
-                delBullets.push(bullet);
-            }
-
             // Remove the element when exceeds the limits
-            if (bullet.y < 3 || bullet.y > 45) {
+            if (bullet.y < 3 || bullet.y > 43) {
                 bullet.remove();
                 delBullets.push(bullet);
             }
@@ -488,7 +506,6 @@ const update = () => {
 
             // Set lose if alien run away
             if (alien.y > 40) {
-                game = false;
                 loseGame();
             }
 
@@ -522,7 +539,7 @@ const update = () => {
             }, 1500);
         }
     } else {
-        loseGame();
+        endGame();
     }
 };
 
